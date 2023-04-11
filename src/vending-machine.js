@@ -1,3 +1,5 @@
-const dummy = function() { return 1;}
+const howManyCoins = function(rupees) {
+  return rupees;
+}
 
-exports.dummy = dummy;
+exports.howManyCoins = howManyCoins;

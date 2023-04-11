@@ -2,7 +2,7 @@ const testing = require("../lib/testing.js");
 const vendingMachine = require("../src/vending-machine.js");
 
 
-testing.assertTest(1, vendingMachine.dummy(), 'testing test framework','passing testFrameWork');
-testing.assertTest(0, vendingMachine.dummy(), 'testing test framework','failing testFrameWork');
+testing.assertTest(50, vendingMachine.howManyCoins(50), 'testing test framework','testing for even coins.');
+testing.assertTest(3, vendingMachine.howManyCoins(3), 'testing test framework','testing for odd coins.');
 console.log(testing.groupLogByKey('result'));
 
