@@ -1,17 +1,17 @@
-const dispenseCoins = function(rupees, value) {
+const getCoinsCount = function(rupees, value) {
   return Math.floor(rupees / value);
 }
 
-const getCoinsCount = function(rupees, currencies) {
+const dispenseCoins = function(rupees, currencies) {
   let count = 0;
   let totalMoney = rupees;
-  for ( let i = currencies.length - 1; i >= 0; i--) {
-    count += dispenseCoins(totalMoney, currencies[i]);
-    totalMoney %= currencies[i];
+  for ( let current = currencies.length - 1; current >= 0; current--) {
+    count += getCoinsCount(totalMoney, currencies[current]);
+    totalMoney %= currencies[current];
   }
 
   return count += totalMoney;
 
 }
 
-exports.getCoinsCount = getCoinsCount;
+exports.dispenseCoins = dispenseCoins;
