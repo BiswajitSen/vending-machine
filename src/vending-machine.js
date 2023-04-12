@@ -4,6 +4,7 @@ const getCoinsCount = function(rupees, value) {
 
 const getMin = function(numbers){
   let min = numbers[0];
+
   for(let i = 0; i <  numbers.length; i++) {
     min = Math.min(min, numbers[i]);
   }
@@ -17,28 +18,10 @@ const minSort = function(numbers) {
 
   for(let i = 0; i < numberSet.length; i++){
     const currentMin = getMin(numberSet);
-    sortedSet.push(currentMin);
-    numberSet = remove(numberSet, numberSet.indexOf(currentMin));
+    sortedSet.unshift(currentMin);
+    numberSet[numberSet.indexOf(currentMin)] = Infinity;
   }
   return sortedSet;
-}
-
-const remove = function(list, index){
-  return list.slice(0,index).concat(list.slice(index+1));
-}
-
-
-const sort = function(numbers) {
-  for(let i = 0; i < numbers.length; i++){
-    for(let j = 0; j < numbers.length; j++) {
-      if(numbers[j] > numbers[j+1]){
-        numbers[j+1] = numbers[j+1] ^ numbers[j];
-        numbers[j] = numbers[j+1] ^ numbers[j];
-        numbers[j+1] = numbers[j+1] ^ numbers[j];
-      }
-    }
-  }
-  return numbers;
 }
 
 const dispenseCoins = function(rupees, currencies) {
@@ -46,10 +29,11 @@ const dispenseCoins = function(rupees, currencies) {
   let totalMoney = rupees;
   let requiresCurrencies = currencies.slice(0);
 
-  requiresCurrencies = sort(requiresCurrencies)
-  for ( let current = currencies.length - 1; current >= 0; current--) {
-    count += getCoinsCount(totalMoney, currencies[current]);
-    totalMoney %= currencies[current];
+  requiresCurrencies = minSort(requiresCurrencies);
+
+  for ( let current = 0; current < currencies.length; current++) {
+    count += getCoinsCount(totalMoney, requiresCurrencies[current]);
+    totalMoney %= requiresCurrencies[current];
   }
 
   return count += totalMoney;
