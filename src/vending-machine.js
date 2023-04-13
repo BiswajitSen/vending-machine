@@ -1,12 +1,12 @@
-const getCoinsCount = function(rupees, value) {
-  return Math.floor(rupees / value);
+const getQuotient = function(divisor, dividend) {
+  return Math.floor(divisor / dividend);
 }
 
-const getMin = function(numbers){
+const findMin = function(numbers){
   let min = numbers[0];
 
-  for(let i = 0; i <  numbers.length; i++) {
-    min = Math.min(min, numbers[i]);
+  for(let index = 0; index <  numbers.length; index++) {
+    min = Math.min(min, numbers[index]);
   }
 
   return min;
@@ -17,9 +17,11 @@ const minSort = function(numbers) {
   const sortedSet = [];
 
   for(let i = 0; i < numberSet.length; i++){
-    const currentMin = getMin(numberSet);
+    const currentMin = findMin(numberSet);
+    const currentMinIndex = numberSet.indexOf(currentMin);
+
     sortedSet.unshift(currentMin);
-    numberSet[numberSet.indexOf(currentMin)] = Infinity;
+    numberSet[currentMinIndex] = Infinity;
   }
   return sortedSet;
 }
@@ -31,9 +33,9 @@ const dispenseCoins = function(rupees, currencies) {
 
   requiresCurrencies = minSort(requiresCurrencies);
 
-  for ( let current = 0; current < currencies.length; current++) {
-    count += getCoinsCount(totalMoney, requiresCurrencies[current]);
-    totalMoney %= requiresCurrencies[current];
+  for (const current of requiresCurrencies) {
+    count += getQuotient(totalMoney, current);
+    totalMoney %= current;
   }
 
   return count += totalMoney;
@@ -42,4 +44,4 @@ const dispenseCoins = function(rupees, currencies) {
 
 exports.dispenseCoins = dispenseCoins;
 exports.minSort = minSort;
-exports.getMin = getMin;
+exports.findMin = findMin;
