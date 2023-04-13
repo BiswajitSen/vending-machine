@@ -1,51 +1,33 @@
-const getQuotient = function(divisor, dividend) {
-  return Math.floor(divisor / dividend);
-}
+const math = require ('../lib/math-utils.js');
+const arrayUtilities = require('../lib/array-utils');
 
-const bubbleSort = function(list){
-  const numbers = list.slice(0);
+const quotient = math.quotient;
+const remainder = math.remainder;
+const sum = math.countTotal;
+const bubbleSort = arrayUtilities.bubbleSort;
 
-  for(let i = 0; i < numbers.length - 1; i++){
-    for(let j = 0; j < numbers.length - i - 1; j++){
-      if(numbers[j] < numbers[j + 1]){
-        const temp = numbers[j];
-        numbers[j] = numbers[j + 1];
-        numbers[j + 1] = temp;
-      }
-    }
-  }
-  return numbers;
-}
-
-const dispenseCoinsWithValue = function(rupees, currencies) {
-  let reminingMoney = rupees;
-  const denominationCount = {};
-  const denominations = bubbleSort(currencies.slice(0));
+const getOptimumDistribution = function(totalAmount, requiredDenominations){
+  const denominations = bubbleSort(requiredDenominations.slice(0));
+  const coinCounts = {};
+  let leftOverAmount = totalAmount;
 
   for (const denomination of denominations) {
-    const coinsCount = getQuotient(reminingMoney, denomination);
-    reminingMoney %= denomination;
-    denominationCount[denomination] = coinsCount;
+    const coins = quotient(leftOverAmount, denomination);
+    leftOverAmount = remainder(leftOverAmount, denomination);
+    coinCounts[denomination] = coins;
   }
-  return denominationCount;
+  return coinCounts;
 }
 
-const countTotalCoins = function(coinsCount) {
-  let totalCoinCount = 0;
-  for (const currentCoinCount of coinsCount) {
-    totalCoinCount += currentCoinCount;
-  }
-  return totalCoinCount;
-}
-
-const dispenseCoins = function(rupees, currencies) {
-  const coinsCount = dispenseCoinsWithValue(rupees, currencies);
+const calculateTotalCoins = function(rupees, requiredDenominations){
+  const coinsCount = getOptimumDistribution(rupees, requiredDenominations);
   const denominationList = Object.values(coinsCount);
-  return countTotalCoins(denominationList);
+
+  return sum(denominationList);
 }
 
 
 
-exports.dispenseCoins = dispenseCoins;
-exports.bubbleSort = bubbleSort;
-exports.dispenseCoinsWithValue = dispenseCoinsWithValue;
+exports.calculateTotalCoins = calculateTotalCoins;
+exports.getOptimumDistribution = getOptimumDistribution;
+
