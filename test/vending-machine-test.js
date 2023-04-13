@@ -2,18 +2,19 @@ const testing = require("../lib/testing.js");
 const vendingMachine = require("../src/vending-machine.js");
 
 const test = function() {
-  testing.assertTest(2, vendingMachine.dispenseCoins(2, [1]), 'for rs. 2 should be 2 coin');
-  testing.assertTest(2, vendingMachine.dispenseCoins(3, [1, 2]),'for rs. 3 should be 2 coins');
-  testing.assertTest(1, vendingMachine.dispenseCoins(5, [1, 2, 5]),'for rs. 5 should be 1 coins');
-  testing.assertTest(2, vendingMachine.dispenseCoins(7, [1, 2, 5]), 'for rs. 7 should be 2 coins');
-  testing.assertTest(2, vendingMachine.dispenseCoins(20, [1, 2, 5, 10]),'for rs. 20 should be 2 coins');
-  testing.assertTest(4, vendingMachine.dispenseCoins(13, [1, 4, 7]), 'for rs. 13 should be 4 coins sorted ascending order');
-  testing.assertTest(4, vendingMachine.dispenseCoins(13, [7, 4, 1]), 'for rs. 13 should be 4 coins decending order');
-  testing.assertTest(4, vendingMachine.dispenseCoins(13, [1, 4, 7]), 'for rs. 13 should be 4 coins ');
+  testing.assertTest(2, vendingMachine.dispenseCoins(2, [1]), '2 coins should be vend, denominations: [1]');
+  testing.assertTest(2, vendingMachine.dispenseCoins(3, [1, 2]),'3 coins should be vend, denominations: [1,2]');
+  testing.assertTest(1, vendingMachine.dispenseCoins(5, [1, 2, 5]),'1 coin should be vend, denominations: [1, 2, 5]');
+  testing.assertTest(2, vendingMachine.dispenseCoins(7, [1, 2, 5]), '7 coins should be vend, denominations: [1, 2, 5, 10]');
+  testing.assertTest(2, vendingMachine.dispenseCoins(20, [1, 2, 5, 10]),'2 coins should be vend, denominations: [1, 2, 5, 10]');
 
-  testing.assertArray([42, 7, 1], vendingMachine.minSort([1, 42, 7]), 'elements should be in ascending order.' );
-  testing.assertArray([42], vendingMachine.minSort([42]), 'sort of one element' );
-  testing.assertTest(1, vendingMachine.findMin([7, 3, 1]), 'in the set [7, 3, 1] 1 should be the min' );
+  testing.assertTest(4, vendingMachine.dispenseCoins(13, [1, 4, 7]), '4 coins should be vend, denominations: [1, 4, 7]');
+  testing.assertTest(4, vendingMachine.dispenseCoins(13, [7, 4, 1]), '4 coins should be vend, denominations: [7, 4, 1]');
+  testing.assertTest(4, vendingMachine.dispenseCoins(13, [1, 7, 4]), '4 coins should be vend, denominations: [1, 7, 4]');
+
+  testing.assertArray([42, 7, 1], vendingMachine.minSort([1, 42, 7]), '[1,42,7] should be sorted to [42, 7, 1]' );
+  testing.assertArray([42], vendingMachine.minSort([42]), 'Sorting array of one element should return the same array.');
+  testing.assertTest(1, vendingMachine.findMin([7, 3, 1]), 'In the set [7, 3, 1], 1 should be the minimum value');
 
   testing.displaySummary();
 }
