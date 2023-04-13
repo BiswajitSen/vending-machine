@@ -17,22 +17,35 @@ const bubbleSort = function(list){
   return numbers;
 }
 
-const dispenseCoins = function(rupees, currencies) {
-  let count = 0;
-  let totalMoney = rupees;
-  let requiresCurrencies = currencies.slice(0);
+const dispenseCoinsWithValue = function(rupees, currencies) {
+  let reminingMoney = rupees;
+  const denominationCount = {};
+  const denominations = bubbleSort(currencies.slice(0));
 
-  requiresCurrencies = bubbleSort(requiresCurrencies);
-
-  for (const current of requiresCurrencies) {
-    count += getQuotient(totalMoney, current);
-    totalMoney %= current;
+  for (const denomination of denominations) {
+    const coinsCount = getQuotient(reminingMoney, denomination);
+    reminingMoney %= denomination;
+    denominationCount[denomination] = coinsCount;
   }
-
-  return count += totalMoney;
-
+  return denominationCount;
 }
+
+const countTotalCoins = function(coinsCount) {
+  let totalCoinCount = 0;
+  for (const currentCoinCount of coinsCount) {
+    totalCoinCount += currentCoinCount;
+  }
+  return totalCoinCount;
+}
+
+const dispenseCoins = function(rupees, currencies) {
+  const coinsCount = dispenseCoinsWithValue(rupees, currencies);
+  const denominationList = Object.values(coinsCount);
+  return countTotalCoins(denominationList);
+}
+
+
 
 exports.dispenseCoins = dispenseCoins;
 exports.bubbleSort = bubbleSort;
-;
+exports.dispenseCoinsWithValue = dispenseCoinsWithValue;
