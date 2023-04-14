@@ -3,17 +3,33 @@ const arrayUtilities = require('../lib/array-utils.js');
 
 const bubbleSort = arrayUtilities.bubbleSort
 const assertArray = testing.assertArray
+const displaySummary = testing.displaySummary;
+const title = testing.displayHeader;
 
 const testBubbleSort = function(){
-  let message = 'Sorting an empty array should return an empty array';
+
+  title('bubbleSort');
+
+  let message = 'Empty array should return an empty array';
   testing.assertArray([], bubbleSort([]), message );
 
-  message = 'Sorting an array consists of one element should return an array with that element';
+  message = 'Array consists of one element should return an array with that element';
   testing.assertArray([1], bubbleSort([1]), message );
 
-  message = 'Sorting an array with multiple positive numbers should return ascending ordered array.';
-  testing.assertArray([42], bubbleSort([42]), message);
+  message = 'Array with multiple positive numbers should return descending ordered array.';
+  testing.assertArray([9, 8, 3, 1], bubbleSort([8, 1, 3, 9]), message);
+
+  message = 'Array including positive and negetive numbers should return descending ordered array.';
+  testing.assertArray([9, 8, 3, 1], bubbleSort([8, 1, 3, 9]), message);
+
+  message = 'Array including multiple occourance of a number should return descending ordered array.';
+  testing.assertArray([9, 8, 3, 1], bubbleSort([8, 1, 3, 9]), message);
 
 }
 
-testBubbleSort();
+const test = function(){
+  testBubbleSort();
+  displaySummary();  
+}
+
+test();

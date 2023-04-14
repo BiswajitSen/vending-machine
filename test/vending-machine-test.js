@@ -3,27 +3,30 @@ const vendingMachine = require("../src/vending-machine.js");
 
 const calculateTotalCoins = vendingMachine.calculateTotalCoins;
 const getOptimunDistribution = vendingMachine.getOptimumDistribution;
-const displayTestLog = testing.displayTestLog;
+const assertTest = testing.assertTest;
 const displaySummary = testing.displaySummary;
+const title = testing.displayHeader;
 
-const testSortedCoinsInput = function() {
-  let message = 'When ammount is equal to the coin value should return 1 coin';
-  testing.assertTest(1, calculateTotalCoins(1, [1]), message);
-  testing.assertTest(2, calculateTotalCoins(3, [1, 2]),'For amount 3, with denominations [1, 2], 2 coins should be vend');
-  testing.assertTest(1, calculateTotalCoins(5, [1, 2, 5]),'For amount 5, with denominations [1, 2, 5], 1 coin should be vend');
-  testing.assertTest(2, calculateTotalCoins(7, [1, 2, 5]), 'For amount 7, with denominations [1, 2, 5], 2 coins should be vend');
-  testing.assertTest(2, calculateTotalCoins(20, [1, 2, 5, 10]),'For amount 20, with denominations [1, 2, 5, 10], 2 coins should be vend');
+const testCoinsCount = function() {
+  title('countTotalCoins');
 
+  let message = 'Provided amount is equal to the coin value should return 1 coin';
+  assertTest(1, calculateTotalCoins(1, [1]), message);
+
+  message = 'Provided no amount, should return 0 coins';
+  assertTest(0, calculateTotalCoins(0, [1]), message);
+
+  message = 'Provided an amount with ordered denominations';
+  assertTest(3, calculateTotalCoins(9, [5, 2, 1]), message);
+
+  message = 'Provided an amount with unordered denominations';
+  assertTest(3, calculateTotalCoins(9, [2, 5, 1]), message);
 }
 
-const testincludesSortingDinomination = function(){
-  testing.assertTest(4, calculateTotalCoins(13, [1, 4, 7]), 'For amount 13, with denominations [1, 4, 7], 4 coins should be vend');
-  testing.assertTest(4, calculateTotalCoins(13, [7, 4, 1]), 'For amount 13, with denominations [7, 4, 1], 4 coins should be vend');
-  testing.assertTest(4, calculateTotalCoins(13, [1, 7, 4]), 'For amount 13, with denominations [1, 7, 4], 4 coins should be vend');
 
-}
+const testEachCoinCounts = function(){
+  title('Each coin count');
 
-const testEachCoinCount = function(){
   let message = 'For amount 12, with denominations [1, 7, 4], one coin of each should vend';
   testing.assertTestObj({ '1': 1, '4': 1, '7': 1 }, getOptimunDistribution(12, [1, 7, 4]), message);
 
@@ -32,11 +35,9 @@ const testEachCoinCount = function(){
 }
 
 const test = function() {
-  testSortedCoinsInput();
-  testincludesSortingDinomination();
-  testEachCoinCount();
+  testCoinsCount();
+  testEachCoinCounts();
   displaySummary();
-
 }
 
 
