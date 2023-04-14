@@ -2,36 +2,58 @@ const testing = require("../lib/testing.js");
 const vendingMachine = require("../src/vending-machine.js");
 
 const calculateTotalCoins = vendingMachine.calculateTotalCoins;
-const getOptimunDistribution = vendingMachine.getOptimumDistribution;
+const getOptimumDistribution = vendingMachine.getOptimumDistribution;
+const assertTestObj = testing.assertTestObj;
 const assertTest = testing.assertTest;
 const displaySummary = testing.displaySummary;
 const title = testing.displayHeader;
 
+const it = function (testName, testData) {
+  assertTest(testData.expected, testData.actual, testName);
+};
+
+const objIt = function (testName, testData) {
+  assertTestObj(testData.expected, testData.actual, testName);
+};
+
 const testCoinsCount = function() {
   title('countTotalCoins');
 
-  let message = 'Provided amount is equal to the coin value should return 1 coin';
-  assertTest(1, calculateTotalCoins(1, [1]), message);
+  it("should return 0 coins when no denominations are given", {
+    actual: calculateTotalCoins(1, []),
+    expected: 0,
+  });
 
-  message = 'Provided no amount, should return 0 coins';
-  assertTest(0, calculateTotalCoins(0, [1]), message);
+  it("should return amount when only 1Rs coins can be dispensed", {
+    actual: calculateTotalCoins(5, [1]),
+    expected: 5,
+  });
 
-  message = 'Provided an amount with ordered denominations';
-  assertTest(3, calculateTotalCoins(9, [5, 2, 1]), message);
+  it("should return optimum coins count when a set of coins can be dispensed", {
+    actual: calculateTotalCoins(9, [5, 2, 1]),
+    expected: 3,
+  });
 
-  message = 'Provided an amount with unordered denominations';
-  assertTest(3, calculateTotalCoins(9, [2, 5, 1]), message);
+  it("should return optimum coins count when an unsorted set of denomination is given", {
+    actual: calculateTotalCoins(10, [5, 1, 4]),
+    expected: 2,
+  });
 }
 
 
 const testEachCoinCounts = function(){
   title('Each coin count');
 
-  let message = 'For amount 12, with denominations [1, 7, 4], one coin of each should vend';
-  testing.assertTestObj({ '1': 1, '4': 1, '7': 1 }, getOptimunDistribution(12, [1, 7, 4]), message);
+  objIt("should return optimum coins count of each denominations when an unsorted set of denomination is given", {
+    actual: getOptimumDistribution(10, [5, 1, 4]),
+    expected: {5: 2, 4: 0, 1: 0},
+  });
 
-  message = 'For amount 1, with denominations [1, 3, 8], only one coin should vend of value 1';
-  testing.assertTestObj({ '1': 1, '4': 0, '7': 0 }, getOptimunDistribution(1, [1, 7, 4]), message);
+  objIt("should return 1 coin of the same value if denomination is given", {
+    actual: getOptimumDistribution(5, [5, 1, 4]),
+    expected: {5: 1, 1: 0, 4: 0},
+  });
+
 }
 
 const test = function() {
